@@ -76,4 +76,8 @@ async def knb_game(update: Update, context: ContextTypes.DEFAULT_TYPE):
             chat_id=update.effective_chat.id,
             text="победила дружба!\n\nлибо же вы написали свой ход с заглавной буквы\nили вы сходили не по правилам!!",
         )
+        await context.bot.send_message(
+            chat_id=update.effective_chat.id,
+            text="!!",
+        )
     
