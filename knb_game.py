@@ -80,4 +80,4 @@ async def knb_game(update: Update, context: ContextTypes.DEFAULT_TYPE):
             chat_id=update.effective_chat.id,
             text="!!",
         )
-    
+    print('проверка git')
