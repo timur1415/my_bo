@@ -40,4 +40,4 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
             chat_id=update.effective_chat.id, message_id=message.id
         )
 
-        return MAIN_MENU
+    return MAIN_MENU
