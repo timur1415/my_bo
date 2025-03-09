@@ -23,6 +23,8 @@ from get_data import get_age, get_name, take_input
 
 from bac_game import bac_game, bac_start
 
+from db import create_table
+
 
 
 from states import (
@@ -45,6 +47,7 @@ if __name__ == "__main__":
         .token("7485420037:AAHorQ62XM3FtqB8UFMQU3vs-MbERKd8sfQ")
         .build()
     )
+    create_table()
     conv_handler = ConversationHandler(
         entry_points=[CommandHandler("start", start)],
         states={

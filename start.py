@@ -7,6 +7,7 @@ from telegram import (
 from telegram.ext import (
     ContextTypes,
 )
+from db import create__user
 
 
 from states import (
@@ -14,6 +15,7 @@ from states import (
 )
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
+
     keyboard = [
         [InlineKeyboardButton("камень ножницы бумага", callback_data="knb")],
         [InlineKeyboardButton("быки и коровы", callback_data="bac")],
@@ -28,6 +30,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
             reply_markup=markup,
         )
     else:
+        create__user(update.effective_user.id, update.effective_user.name)
         await context.bot.send_message(
             chat_id=update.effective_chat.id,
             text="привет выбери игру в которую будем играть",
