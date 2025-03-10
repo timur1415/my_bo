@@ -53,20 +53,20 @@ async def knb_game(update: Update, context: ContextTypes.DEFAULT_TYPE):
             chat_id=update.effective_chat.id,
             text="красава победа на твоей стороне!!!\n\nя выбрал ножницы",
         )
-        update_wins_knb(id)
+        update_wins_knb(update.effective_user.id)
         
     elif text_user == "ножницы" and comp_hod[n] == "бумага":
         await context.bot.send_message(
             chat_id=update.effective_chat.id,
             text="красава победа на твоей стороне!!!\n\nя выбрал бумагу",
         )
-        update_wins_knb(id)
+        update_wins_knb(update.effective_user.id)
     elif text_user == "бумага" and comp_hod[n] == "камень":
         await context.bot.send_message(
             chat_id=update.effective_chat.id,
             text="красава победа на твоей стороне!!!\n\nя выбрал камень ",
         )
-        update_wins_knb(id)
+        update_wins_knb(update.effective_user.id)
     elif text_user == "лом":
         await context.bot.send_message(
             chat_id=update.effective_chat.id,
