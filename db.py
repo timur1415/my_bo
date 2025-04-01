@@ -12,7 +12,6 @@ def create_table():
                     name TEXT,
                     knb_win INTEGER,
                     knb_games INTEGER,
-                    knb_proc INTEGER,
                     bac_recored INTEGER,
                     knz_win INTEGER
     )''')
@@ -30,7 +29,7 @@ def create__user(id, name):
     cur.execute(f'SELECT id FROM users WHERE id={id}')
     user_data = cur.fetchone()#вернётся либо none  | (123) 
     if user_data == None:
-        cur.execute(f'INSERT INTO users VALUES({id}, "{name}", 0, 0, 0, 0, 0)')
+        cur.execute(f'INSERT INTO users VALUES({id}, "{name}", 0, 0, 0, 0)')
         conn.commit()
     conn.close() 
 
@@ -47,27 +46,27 @@ def update_wins_knb(id,result):
     # Подключение закрыть
     conn.close()
 
-def update_proc_knb(id,proc):
-    # подключение к бд
-    conn = sqlite3.connect('game_bot.db')
-    # создать курсор
-    cur = conn.cursor()
-    result = cur.fetchone() 
-    wins = result[2]
-    games = result[3]
-    proc = wins / games
-    proc *= 100
-    if proc != 0:
-        proc = wins / games
-        proc *= 100
-        # proc = wins / games * 100
-        cur.execute(f'UPDATE users SET knb_proc = {proc} WHERE id = {id}')
-    else:
-        proc = None 
-    conn.commit()
-    conn.close()
 
-    
-   
+def get_knb_rate(name):
+    lst = []
+     # Подлючаемся к бдхе
+    conn = sqlite3.connect('game_bot.db')
+    # Создать курсор
+    cur = conn.cursor()
+    cur.execute(f'SELECT name, knb_wins, knb_games where name={name}')
+    data = cur.fetchall()
+    for user in data:
+        name = user[0]
+        wins = user[1]
+        games = user[2]
+        if wins > 0:
+            proc = (wins / games) * 100
+        else:
+            proc = 0
+    lst.append(proc, name)
+    lst.sort(reverse = True)
+    return lst
+
+
 
    
