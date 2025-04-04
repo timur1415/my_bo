@@ -6,9 +6,9 @@ from telegram.ext import (
 )
 
 
-from knz_game import knz_start
-from knb_game import knb_start
-from bac_game import bac_start
+from game.knz_game import knz_start
+from game.knb_game import knb_start
+from game.bac_game import bac_start
 
 
 async def inline_button_proc(update: Update, context: ContextTypes.DEFAULT_TYPE):

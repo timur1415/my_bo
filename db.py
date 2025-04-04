@@ -47,13 +47,13 @@ def update_wins_knb(id,result):
     conn.close()
 
 
-def get_knb_rate(name):
+def get_knb_rate():
     lst = []
      # Подлючаемся к бдхе
     conn = sqlite3.connect('game_bot.db')
     # Создать курсор
     cur = conn.cursor()
-    cur.execute(f'SELECT name, knb_wins, knb_games where name={name}')
+    cur.execute('SELECT name, knb_win, knb_games FROM users')
     data = cur.fetchall()
     for user in data:
         name = user[0]
@@ -63,7 +63,7 @@ def get_knb_rate(name):
             proc = (wins / games) * 100
         else:
             proc = 0
-    lst.append(proc, name)
+        lst.append([name,proc])
     lst.sort(reverse = True)
     return lst
 

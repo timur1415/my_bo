@@ -9,19 +9,19 @@ from telegram.ext import (
 )
 
 
-from knz_game import knz_hod
+from game.knz_game import knz_hod
 
 from rate import my_stat, knb_stat, bac_stat, knz_stat
 
 from start import start
 
-from knb_game import knb_start, knb_game
+from game.knb_game import knb_start, knb_game
 
 from inline_button_proc import inline_button_proc
 
 from get_data import get_age, get_name, take_input
 
-from bac_game import bac_game, bac_start
+from game.bac_game import bac_game, bac_start
 
 from db import create_table
 
