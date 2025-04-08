@@ -36,6 +36,9 @@ from states import (
     KNZ,
     RATE,
 )
+import os
+from dotenv import load_dotenv
+load_dotenv()
 
 logging.basicConfig(
     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s", level=logging.INFO
@@ -44,7 +47,7 @@ logging.basicConfig(
 if __name__ == "__main__":
     application = (
         ApplicationBuilder()
-        .token("7485420037:AAHorQ62XM3FtqB8UFMQU3vs-MbERKd8sfQ")
+        .token(os.getenv('TOKEN'))
         .build()
     )
     create_table()

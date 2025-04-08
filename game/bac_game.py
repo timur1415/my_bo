@@ -7,6 +7,8 @@ from telegram.ext import (
 )
 from start import start
 
+from db import update_bac_record
+
 from states import (
     BAC,
 )
@@ -66,6 +68,7 @@ if __name__ == "__main__":
 
 
 async def bac_start(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    context.user_data['n_hod'] = 0
     await context.bot.send_message(
         chat_id=update.effective_chat.id,
         text="Суть игры заключается в том, что компьютер загадывает одно четырехзначное число цифры, которого должны быть различны. Затем пользователь должен это число отгадать.\n\nпримеры игры:\n\nкомпьютер загадывает 1234 и не говорит от этом человеку\n\nВведите число: 4739\n\nБыки: 1\n\nКоровы: 1\n\nПояснение: Компьютер сказал 1 бык потому, что в догадке человека есть число 3 и оно совпадает с 3 в загаданном числе по номеру. 1 корова потому, что в догадке человека, есть число 4, но в его числе 4 на 1м месте, а у компьютера 4 на 4м месте.Введите число: 4231\n\nБыки: 2\n\nКоровы: 2\n\nПояснение: 2 быка потому, что в догадке человека есть числа 2 и 3, которые совпадают по номеру с 2 и 3 из загаданного компьютером числа.\n\nВведите число: 1234\n\nБыки: 4\n\nКоровы: 0\n\nВы победили",
@@ -79,6 +82,7 @@ async def bac_start(update: Update, context: ContextTypes.DEFAULT_TYPE):
 async def bac_game(update: Update, context: ContextTypes.DEFAULT_TYPE):
     g_sp = context.user_data["g_sp"]
     num = int(update.effective_message.text)
+    context.user_data['n_hod'] += 1
     u_sp = check_num(num)
     if u_sp == None:
         await context.bot.send_message(
@@ -91,9 +95,12 @@ async def bac_game(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await context.bot.send_message(
             chat_id=update.effective_chat.id, text="ты угадал"
         )
+        update_bac_record(update.effective_user.id, context.user_data['n_hod'])
         return await start(update, context)
     else:
         await context.bot.send_message(
             chat_id=update.effective_chat.id,
             text=f"быков у тебя: {buls}\nкоров у тебя: {cows}:",
         )
+    
+    

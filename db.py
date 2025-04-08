@@ -12,8 +12,9 @@ def create_table():
                     name TEXT,
                     knb_win INTEGER,
                     knb_games INTEGER,
-                    bac_recored INTEGER,
-                    knz_win INTEGER
+                    bac_record INTEGER,
+                    knz_win_x INTEGER,
+                    knz_win_O
     )''')
 
     # Сохранить если было изменение
@@ -29,7 +30,7 @@ def create__user(id, name):
     cur.execute(f'SELECT id FROM users WHERE id={id}')
     user_data = cur.fetchone()#вернётся либо none  | (123) 
     if user_data == None:
-        cur.execute(f'INSERT INTO users VALUES({id}, "{name}", 0, 0, 0, 0)')
+        cur.execute(f'INSERT INTO users VALUES({id}, "{name}", 0, 0, 0, 0, 0)')
         conn.commit()
     conn.close() 
 
@@ -67,6 +68,15 @@ def get_knb_rate():
     lst.sort(reverse = True)
     return lst
 
+def update_bac_record(id, record):
+    conn = sqlite3.connect('game_bot.db')
+    cur = conn.cursor()
+    cur.execute(f'SELECT id, bac_record from users WHERE id={id}')
+    data = cur.fetchone()
+    id = data[0]
+    bac_record = data[1]
+    if record < bac_record:
+        cur.execute(f'UPDATE users SET bac_record = {record} WHERE id={id}')
+    conn.commit()
+    conn.close()
 
-
-   

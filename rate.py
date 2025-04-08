@@ -16,8 +16,8 @@ async def my_stat(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     await query.answer()
     keyboard = [
-        [InlineKeyboardButton("стата камень ножницы бумага", callback_data="knb_stat")],
-        [InlineKeyboardButton("стата быки и коровы", callback_data="bac_stat")],
+        [InlineKeyboardButton("топ игроков по проценту в камень ножницы бумага", callback_data="knb_stat")],
+        [InlineKeyboardButton("рекорд в быки и коровы", callback_data="bac_stat")],
         [InlineKeyboardButton("стата крестики нолики", callback_data="knz_stat")],
         [InlineKeyboardButton("назад", callback_data="back")],
     ]
