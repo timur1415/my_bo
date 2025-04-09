@@ -32,9 +32,7 @@ def create__user(id, name):
     cur.execute(f"SELECT id FROM users WHERE id={id}")
     user_data = cur.fetchone()  # вернётся либо none  | (123)
     if user_data == None:
-        cur.execute(
-            f'INSERT INTO users VALUES({id}, "{name}", 0, 0, 0, 0, 10000000000000)'
-        )
+        cur.execute(f'INSERT INTO users VALUES({id}, "{name}", 0, 0, 1000000, 0, 0)')
         conn.commit()
     conn.close()
 
@@ -55,6 +53,17 @@ def update_wins_knb(id, result):
     # Подключение закрыть
     conn.close()
 
+def get_knb_wins_games(id):
+    lst = []
+    conn = sqlite3.connect("game_bot.db")
+    cur = conn.cursor()
+    cur.execute(f"SELECT id, knb_win, knb_games FROM users WHERE id={id}")
+    data = cur.fetchone()
+    id = data[0]
+    wins = data[1]
+    games = data[2]
+    lst.append([wins, games])
+    return lst
 
 def get_knb_rate():
     lst = []
@@ -88,3 +97,25 @@ def update_bac_record(id, record):
         cur.execute(f"UPDATE users SET bac_record = {record} WHERE id={id}")
     conn.commit()
     conn.close()
+
+def get_bac_record(id):
+    conn = sqlite3.connect("game_bot.db")
+    cur = conn.cursor()
+    cur.execute(f'SELECT id, bac_record FROM users WHERE id={id}')
+    data = cur.fetchone()
+    id = data[0]
+    bac_record = data[1]
+    return bac_record
+
+def get_bac_rate():
+    lst = []
+    conn = sqlite3.connect("game_bot.db")
+    cur = conn.cursor()
+    cur.execute("SELECT name, bac_record FROM users")
+    data = cur.fetchall()
+    for user in data:
+        name = user[0]
+        bac_record = user[1]
+        lst.append([name, bac_record])
+    lst.sort(reverse=True)
+    return lst
