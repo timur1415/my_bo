@@ -68,7 +68,7 @@ async def knz_hod(update: Update, context: ContextTypes.DEFAULT_TYPE):
     )
     ress = check_win(context.user_data["board"])
     context.user_data["hod"] += 1
-    if ress in "XO":
+    if ress and ress in "XO":
         await context.bot.send_message(
             chat_id=update.effective_chat.id,
             text=f"победил {ress}\n\n/start что бы выбрать игры",
