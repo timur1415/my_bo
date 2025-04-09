@@ -8,6 +8,7 @@ from telegram.constants import ParseMode
 
 from states import KNZ, MAIN_MENU
 
+from db import update_knz_record
 
 def get_board_st(board):
     st = "-" * 13
@@ -21,6 +22,7 @@ async def knz_start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     board = ["1", "2", "3", "4", "5", "6", "7", "8", "9"]
     context.user_data["board"] = board
     hod = 1
+    context.user_data['db_hod'] = 0
     context.user_data["hod"] = hod
     await context.bot.send_message(
         chat_id=update.effective_chat.id,
@@ -39,6 +41,7 @@ async def knz_start(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 
 async def knz_hod(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    context.user_data["db_hod"] += 1
     text_user = int(update.effective_message.text)
     if text_user > 9 or text_user < 1:
         await context.bot.send_message(
@@ -70,6 +73,7 @@ async def knz_hod(update: Update, context: ContextTypes.DEFAULT_TYPE):
             chat_id=update.effective_chat.id,
             text=f"победил {ress}\n\n/start что бы выбрать игры",
         )
+        update_knz_record(update.effective_chat.id, context.user_data["db_hod"])
         return MAIN_MENU
     elif context.user_data["hod"] == 9 and ress == None:
         await context.bot.send_message(
