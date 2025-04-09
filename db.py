@@ -53,6 +53,7 @@ def update_wins_knb(id, result):
     # Подключение закрыть
     conn.close()
 
+
 def get_knb_wins_games(id):
     lst = []
     conn = sqlite3.connect("game_bot.db")
@@ -64,6 +65,7 @@ def get_knb_wins_games(id):
     games = data[2]
     lst.append([wins, games])
     return lst
+
 
 def get_knb_rate():
     lst = []
@@ -98,14 +100,16 @@ def update_bac_record(id, record):
     conn.commit()
     conn.close()
 
+
 def get_bac_record(id):
     conn = sqlite3.connect("game_bot.db")
     cur = conn.cursor()
-    cur.execute(f'SELECT id, bac_record FROM users WHERE id={id}')
+    cur.execute(f"SELECT id, bac_record FROM users WHERE id={id}")
     data = cur.fetchone()
     id = data[0]
     bac_record = data[1]
     return bac_record
+
 
 def get_bac_rate():
     lst = []

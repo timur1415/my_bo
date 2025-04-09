@@ -26,7 +26,6 @@ from game.bac_game import bac_game, bac_start
 from db import create_table
 
 
-
 from states import (
     MAIN_MENU,
     KNB,
@@ -38,6 +37,7 @@ from states import (
 )
 import os
 from dotenv import load_dotenv
+
 load_dotenv()
 
 logging.basicConfig(
@@ -45,11 +45,7 @@ logging.basicConfig(
 )
 
 if __name__ == "__main__":
-    application = (
-        ApplicationBuilder()
-        .token(os.getenv('TOKEN'))
-        .build()
-    )
+    application = ApplicationBuilder().token(os.getenv("TOKEN")).build()
     create_table()
     conv_handler = ConversationHandler(
         entry_points=[CommandHandler("start", start)],
@@ -73,7 +69,7 @@ if __name__ == "__main__":
                 CallbackQueryHandler(knb_stat, pattern="^knb_stat$"),
                 CallbackQueryHandler(start, pattern="^back$"),
                 CallbackQueryHandler(bac_stat, pattern="^bac_stat$"),
-                CallbackQueryHandler(knz_stat, pattern="^knz_stat$")
+                CallbackQueryHandler(knz_stat, pattern="^knz_stat$"),
             ],
         },
         fallbacks=[CommandHandler("start", start)],

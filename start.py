@@ -14,8 +14,8 @@ from states import (
     MAIN_MENU,
 )
 
-async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
+async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     keyboard = [
         [InlineKeyboardButton("камень ножницы бумага", callback_data="knb")],
         [InlineKeyboardButton("быки и коровы", callback_data="bac")],
@@ -37,7 +37,9 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
             reply_markup=markup,
         )
         message = await context.bot.send_message(
-            chat_id=update.effective_chat.id, text="f", reply_markup=ReplyKeyboardRemove()
+            chat_id=update.effective_chat.id,
+            text="f",
+            reply_markup=ReplyKeyboardRemove(),
         )
         await context.bot.delete_message(
             chat_id=update.effective_chat.id, message_id=message.id

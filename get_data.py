@@ -6,12 +6,11 @@ from telegram.ext import (
 )
 
 
-
-
 from states import (
     GET_NAME,
     GET_AGE,
 )
+
 
 async def take_input(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await context.bot.send_message(

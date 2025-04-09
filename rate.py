@@ -66,9 +66,9 @@ async def bac_stat(update: Update, context: ContextTypes.DEFAULT_TYPE):
     markup = InlineKeyboardMarkup(keyboard)
 
     record = get_bac_rate()
-    text = ''
+    text = ""
     for rec in record:
-        text += f'{rec[0]} -- {rec[1]}ходов'
+        text += f"{rec[0]} -- {rec[1]}ходов"
 
     await query.edit_message_text(f"{text}", reply_markup=markup)
 
