@@ -33,7 +33,6 @@ def create__user(id, name):
     if user_data == None:
         cur.execute(f'INSERT INTO users VALUES({id}, "{name}", 0, 0, 1000000, 100000)')
         conn.commit()
-    
 
 
 def update_wins_knb(id, result):
@@ -123,14 +122,38 @@ def get_bac_rate():
     lst.sort(reverse=True)
     return lst
 
-def update_knz_record(id, record):
+
+def update_knz_record(id, hod):
     conn = sqlite3.connect("game_bot.db")
     cur = conn.cursor()
     cur.execute(f"SELECT id, knz_record FROM users WHERE id={id}")
     data = cur.fetchone()
     id = data[0]
     knz_record = data[1]
-    if record < knz_record:
-        cur.execute(f"UPDATE users SET bac_record = {record} WHERE id={id}")
+    if hod < knz_record:
+        cur.execute(f"UPDATE users SET knz_record = {hod} WHERE id={id}")
     conn.commit()
     conn.close()
+
+
+def get_knz_record(id):
+    conn = sqlite3.connect("game_bot.db")
+    cur = conn.cursor()
+    cur.execute(f"SELECT id, knz_record FROM users WHERE id={id}")
+    data = cur.fetchone()
+    id = data[0]
+    knz_record = data[1]
+    return knz_record
+
+def get_knz_rate():
+    lst = []
+    conn = sqlite3.connect("game_bot.db")
+    cur = conn.cursor()
+    cur.execute('SELECT name, knz_record FROM users')
+    data = cur.fetchall()
+    for user in data:
+        name = user[0]
+        record = user[1]
+        lst.append([name, record])
+    lst.sort(reverse=True)
+    return lst

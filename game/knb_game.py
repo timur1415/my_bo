@@ -10,6 +10,7 @@ import random
 # from start import start
 from db import update_wins_knb
 
+from start import start
 
 
 from states import (
@@ -17,7 +18,7 @@ from states import (
 )
 
 async def knb_start(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    keyboard = [["камень", "ножницы", "бумага",]]
+    keyboard = [["камень", "ножницы", "бумага", "выход"]]
     markup = ReplyKeyboardMarkup(keyboard)
     await context.bot.send_message(
         chat_id=update.effective_chat.id,
@@ -35,38 +36,38 @@ async def knb_game(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if text_user == "камень" and comp_hod[n] == "бумага":
         await context.bot.send_message(
             chat_id=update.effective_chat.id,
-            text="ты проиграл\n\nя выбрал бумагу\n\nчто бы выбрать другую игру нажми на /start",
+            text="ты проиграл\n\nя выбрал бумагу",
         )
         update_wins_knb(update.effective_user.id, 'l')
     elif text_user == "бумага" and comp_hod[n] == "ножницы":
         await context.bot.send_message(
             chat_id=update.effective_chat.id,
-            text="ты проиграл\n\nя выбрал ножницы\n\nчто бы выбрать другую игру нажми на /start",
+            text="ты проиграл\n\nя выбрал ножницы",
         )
         update_wins_knb(update.effective_user.id, 'l')
     elif text_user == "ножницы" and comp_hod[n] == "камень":
         await context.bot.send_message(
             chat_id=update.effective_chat.id,
-            text="ты проиграл\n\nя выбрал камень\n\nчто бы выбрать другую игру нажми на /start",
+            text="ты проиграл\n\nя выбрал камень",
         )
         update_wins_knb(update.effective_user.id, 'l')
     elif text_user == "камень" and comp_hod[n] == "ножницы":
         await context.bot.send_message(
             chat_id=update.effective_chat.id,
-            text="красава победа на твоей стороне!!!\n\nя выбрал ножницы\n\nчто бы выбрать другую игру нажми на /start",
+            text="красава победа на твоей стороне!!!\n\nя выбрал ножницы",
         )
         update_wins_knb(update.effective_user.id, 'w')
         
     elif text_user == "ножницы" and comp_hod[n] == "бумага":
         await context.bot.send_message(
             chat_id=update.effective_chat.id,
-            text="красава победа на твоей стороне!!!\n\nя выбрал бумагу\n\nчто бы выбрать другую игру нажми на /start",
+            text="красава победа на твоей стороне!!!\n\nя выбрал бумагу",
         )
         update_wins_knb(update.effective_user.id, 'w')
     elif text_user == "бумага" and comp_hod[n] == "камень":
         await context.bot.send_message(
             chat_id=update.effective_chat.id,
-            text="красава победа на твоей стороне!!!\n\nя выбрал камень\n\nчто бы выбрать другую игру нажми на /start",
+            text="красава победа на твоей стороне!!!\n\nя выбрал камень",
         )
         update_wins_knb(update.effective_user.id, 'w')
     elif text_user == "лом":
@@ -76,12 +77,12 @@ async def knb_game(update: Update, context: ContextTypes.DEFAULT_TYPE):
         )
         update_wins_knb(update.effective_user.id,'w')
         
-    # elif text_user == 'выход':
-        # return start
+    elif text_user == 'выход':
+        return await start(update, context)
 
     else:
         await context.bot.send_message(
             chat_id=update.effective_chat.id,
-            text="победила дружба!\n\nчто бы выбрать другую игру нажми на /start",
+            text="победила дружба!",
         )
         update_wins_knb(update.effective_user.id,'d')

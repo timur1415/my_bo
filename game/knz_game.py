@@ -1,14 +1,14 @@
-from telegram import (
-    Update,
-)
+from telegram import Update
 from telegram.ext import (
     ContextTypes,
 )
 from telegram.constants import ParseMode
 
-from states import KNZ, MAIN_MENU
+from states import KNZ
 
 from db import update_knz_record
+
+from start import start
 
 def get_board_st(board):
     st = "-" * 13
@@ -22,7 +22,7 @@ async def knz_start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     board = ["1", "2", "3", "4", "5", "6", "7", "8", "9"]
     context.user_data["board"] = board
     hod = 1
-    context.user_data['db_hod'] = 0
+    context.user_data["db_hod"] = 0
     context.user_data["hod"] = hod
     await context.bot.send_message(
         chat_id=update.effective_chat.id,
@@ -34,7 +34,7 @@ async def knz_start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         parse_mode=ParseMode.MARKDOWN_V2,
     )
     await context.bot.send_message(
-        chat_id=update.effective_chat.id, text="куда вы хотите поставить крестик?"
+        chat_id=update.effective_chat.id, text="куда вы хотите поставить нолик?"
     )
 
     return KNZ
@@ -42,6 +42,7 @@ async def knz_start(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 async def knz_hod(update: Update, context: ContextTypes.DEFAULT_TYPE):
     context.user_data["db_hod"] += 1
+    context.user_data["hod"] += 1
     text_user = int(update.effective_message.text)
     if text_user > 9 or text_user < 1:
         await context.bot.send_message(
@@ -67,21 +68,23 @@ async def knz_hod(update: Update, context: ContextTypes.DEFAULT_TYPE):
         parse_mode=ParseMode.MARKDOWN_V2,
     )
     ress = check_win(context.user_data["board"])
-    context.user_data["hod"] += 1
+    context.user_data["db_hod"] += 1
     if ress and ress in "XO":
         await context.bot.send_message(
             chat_id=update.effective_chat.id,
-            text=f"победил {ress}\n\n/start что бы выбрать игры",
+            text=f"победил {ress}", 
         )
+
         update_knz_record(update.effective_chat.id, context.user_data["db_hod"])
-        return MAIN_MENU
+        return await start(update, context)
+        
+    
     elif context.user_data["hod"] == 9 and ress == None:
         await context.bot.send_message(
-            chat_id=update.effective_chat.id, text="нечья"
+            chat_id=update.effective_chat.id,
+            text="нечья",
         )
-        return MAIN_MENU
-    
-
+        return await start(update, context)
 
 def check_win(board):
     if board[0] == board[1] == board[2]:

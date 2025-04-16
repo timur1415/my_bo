@@ -6,6 +6,7 @@ from telegram.ext import (
     filters,
     ConversationHandler,
     CallbackQueryHandler,
+    PicklePersistence
 )
 
 
@@ -22,8 +23,6 @@ from inline_button_proc import inline_button_proc
 from get_data import get_age, get_name, take_input
 
 from game.bac_game import bac_game, bac_start
-
-from db import create_table
 
 
 from states import (
@@ -45,8 +44,8 @@ logging.basicConfig(
 )
 
 if __name__ == "__main__":
-    application = ApplicationBuilder().token(os.getenv("TOKEN")).build()
-    create_table()
+    persistence = PicklePersistence(filepath="game_bot")
+    application = ApplicationBuilder().token(os.getenv("TOKEN")).persistence(persistence).build()
     conv_handler = ConversationHandler(
         entry_points=[CommandHandler("start", start)],
         states={
@@ -64,7 +63,9 @@ if __name__ == "__main__":
             BAC: [MessageHandler(filters.TEXT & ~filters.COMMAND, bac_game)],
             GET_NAME: [MessageHandler(filters.TEXT & ~filters.COMMAND, get_name)],
             GET_AGE: [MessageHandler(filters.TEXT & ~filters.COMMAND, get_age)],
-            KNZ: [MessageHandler(filters.TEXT & ~filters.COMMAND, knz_hod)],
+            KNZ: [ MessageHandler(filters.TEXT & ~filters.COMMAND, knz_hod),
+                  CallbackQueryHandler(start, pattern="^exit$"),
+                  CallbackQueryHandler(knz_hod, pattern="^again$")],
             RATE: [
                 CallbackQueryHandler(knb_stat, pattern="^knb_stat$"),
                 CallbackQueryHandler(start, pattern="^back$"),
@@ -73,6 +74,8 @@ if __name__ == "__main__":
             ],
         },
         fallbacks=[CommandHandler("start", start)],
+        name="game_bot",
+        persistent=True
     )
 
     application.add_handler(conv_handler)
