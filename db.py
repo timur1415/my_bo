@@ -85,6 +85,22 @@ def get_knb_rate():
     lst.sort(reverse=True)
     return lst
 
+def get_knb_procent(id):
+    lst = []
+    conn = sqlite3.connect('game_bot.db')
+    cur = conn.cursor()
+    cur.execute(f"SELECT id, name, knb_wins, knb_games FROM user WHERE id={id}")
+    data = cur.fetchone()
+    id = data[0]
+    name = data[1]
+    wins = data[2]
+    games = data[3]
+    if wins > 0:
+        proc = (wins / games) * 100
+    else:
+        proc = 0
+    lst.append([name, proc])
+    return lst
 
 def update_bac_record(id, record):
     conn = sqlite3.connect("game_bot.db")

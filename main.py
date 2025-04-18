@@ -72,7 +72,7 @@ if __name__ == "__main__":
                 CallbackQueryHandler(bac_stat, pattern="^bac_stat$"),
                 CallbackQueryHandler(knz_stat, pattern="^knz_stat$"),
             ],
-        },
+        },                      
         fallbacks=[CommandHandler("start", start)],
         name="game_bot",
         persistent=True
