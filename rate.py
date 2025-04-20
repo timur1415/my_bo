@@ -93,6 +93,8 @@ async def knz_stat(update: Update, context: ContextTypes.DEFAULT_TYPE):
     hod = get_knz_rate()
     text = ""
     for top in hod:
+        if top[1] == 100000:
+            top[1] = 0
         text += f"{top[0]} закончил партию за {top[1]} ходов\n\n"
 
     await query.edit_message_text(f"{text}", reply_markup=markup)
