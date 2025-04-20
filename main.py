@@ -9,6 +9,7 @@ from telegram.ext import (
     PicklePersistence
 )
 
+from db import create_table
 
 from game.knz_game import knz_hod
 
@@ -44,6 +45,7 @@ logging.basicConfig(
 )
 
 if __name__ == "__main__":
+    create_table()
     persistence = PicklePersistence(filepath="game_bot")
     application = ApplicationBuilder().token(os.getenv("TOKEN")).persistence(persistence).build()
     conv_handler = ConversationHandler(
