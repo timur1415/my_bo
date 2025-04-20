@@ -14,7 +14,7 @@ from db import (
     get_bac_rate,
     get_knz_record,
     get_knz_rate,
-    get_knb_procent
+    # get_knb_procent
 )
 from states import (
     RATE,
@@ -40,17 +40,13 @@ async def my_stat(update: Update, context: ContextTypes.DEFAULT_TYPE):
     id = update.effective_user.id
     knz_record = get_knz_record(id)
     bac_record = get_bac_record(id)
-    procent = get_knb_rate()
-    my_procent = get_knb_procent(id)
     wins_games = get_knb_wins_games(id)
     if bac_record == 1000000:
         bac_record = 0
     for nums in wins_games:
         wins = nums[0]
         games = nums[1]
-    for proc in my_procent:
-        name = wins[0]
-        procent = [1]
+        procent = (wins/games) * 100
         user_proc = round(procent, 1)
     await query.edit_message_text(
         f"привет, {update.effective_user.first_name}, ваша статистика:\n\nКАМЕНЬ НОЖНИЦЫ БУМАГА:\n{wins} побед из {games} игр - {user_proc}% побед\n\nБЫКИ И КОРОВЫ:\nваш рекорд: {bac_record} ходов\n\nКРЕСТИКИ НОЛИКИ:\nминимальное количество ходов: {knz_record}",
